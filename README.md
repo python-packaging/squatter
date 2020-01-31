@@ -3,6 +3,14 @@
 For those times you need to register a name prior to having the code ready, but
 can't be bothered to remember which fields are required.
 
+Usage:
+
+```
+python -m squatter generate --upload mypackage
+```
+
+(Uses author information from git config)
+
 
 # License
 
