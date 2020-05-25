@@ -1,3 +1,4 @@
+import glob
 import sys
 from pathlib import Path
 from subprocess import check_call, check_output
@@ -40,4 +41,4 @@ class Env:
 
     def upload(self) -> None:
         check_call([sys.executable, "setup.py", "sdist"], cwd=self.staging_directory)
-        # check_call(["twine", "upload"], cwd=self.staging_directory)
+        check_call(["twine", "upload"] + glob.glob(f"{self.staging_directory}/dist/*.tar.gz"), cwd=self.staging_directory)
