@@ -10,7 +10,7 @@ from setuptools import setup
 setup(
     name={package_name!r},
     description="coming soon",
-    version="0.0.0",
+    version="0.0.0a1",
     author={author!r},
     author_email={author_email!r},
 )
