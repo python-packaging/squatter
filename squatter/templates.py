@@ -39,6 +39,12 @@ class Env:
         data = SETUP_PY_TMPL.format(**locals())
         (Path(self.staging_directory) / "setup.py").write_text(data)
 
-    def upload(self) -> None:
+    def sdist(self) -> None:
         check_call([sys.executable, "setup.py", "sdist"], cwd=self.staging_directory)
-        check_call(["twine", "upload"] + glob.glob(f"{self.staging_directory}/dist/*.tar.gz"), cwd=self.staging_directory)
+
+    def upload(self) -> None:
+        self.sdist()
+        check_call(
+            ["twine", "upload"] + glob.glob(f"{self.staging_directory}/dist/*.tar.gz"),
+            cwd=self.staging_directory,
+        )

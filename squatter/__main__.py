@@ -7,7 +7,7 @@ from .templates import Env
 
 
 @click.group()
-def cli():
+def cli() -> None:  # pragma: no cover
     pass
 
 
@@ -35,5 +35,5 @@ def generate(
             print("Rerun with --upload to upload")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     cli()
