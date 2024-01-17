@@ -36,7 +36,7 @@ class SquatterEnvTest(unittest.TestCase):
             ("git", "config", "user.name"): "Bob",
             ("git", "config", "user.email"): "email@example.com",
         }
-        check_output_mock.side_effect = lambda cmd, **kwargs: tbl[tuple(cmd)]  # type: ignore
+        check_output_mock.side_effect = lambda cmd, **kwargs: tbl[tuple(cmd)]
 
         with TemporaryDirectory() as d:
             env = Env(d)
@@ -62,7 +62,7 @@ class SquatterEnvTest(unittest.TestCase):
             ("git", "config", "user.name"): "Bob",
             ("git", "config", "user.email"): "email@example.com",
         }
-        check_output_mock.side_effect = lambda cmd, **kwargs: tbl[tuple(cmd)]  # type: ignore
+        check_output_mock.side_effect = lambda cmd, **kwargs: tbl[tuple(cmd)]
 
         uploads = 0
 
