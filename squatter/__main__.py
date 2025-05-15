@@ -13,6 +13,9 @@ def cli() -> None:  # pragma: no cover
 
 @cli.command(help="Generate a package")
 @click.option(
+    "--keep", is_flag=True, default=False, help="Do not delete temp dir"
+)
+@click.option(
     "--upload", is_flag=True, default=False, help="Whether to invoke twine upload"
 )
 @click.option("--author", help="Author name, defaults to reading from git config")
@@ -21,11 +24,13 @@ def cli() -> None:  # pragma: no cover
 )
 @click.argument("package_name")
 def generate(
-    package_name: str, upload: bool, author: Optional[str], author_email: Optional[str]
+    package_name: str, upload: bool, keep: bool, author: Optional[str], author_email: Optional[str]
 ) -> None:
     # TODO flag for delete
-    with tempfile.TemporaryDirectory(prefix=package_name) as d:
+    with tempfile.TemporaryDirectory(prefix=package_name, delete=not keep) as d:
         env = Env(d)
+        if keep:
+            print("Generating in", d)
         env.generate(
             package_name=package_name, author=author, author_email=author_email
         )
