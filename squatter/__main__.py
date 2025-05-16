@@ -12,9 +12,7 @@ def cli() -> None:  # pragma: no cover
 
 
 @cli.command(help="Generate a package")
-@click.option(
-    "--keep", is_flag=True, default=False, help="Do not delete temp dir"
-)
+@click.option("--keep", is_flag=True, default=False, help="Do not delete temp dir")
 @click.option(
     "--upload", is_flag=True, default=False, help="Whether to invoke twine upload"
 )
@@ -24,7 +22,11 @@ def cli() -> None:  # pragma: no cover
 )
 @click.argument("package_name")
 def generate(
-    package_name: str, upload: bool, keep: bool, author: Optional[str], author_email: Optional[str]
+    package_name: str,
+    upload: bool,
+    keep: bool,
+    author: Optional[str],
+    author_email: Optional[str],
 ) -> None:
     # TODO flag for delete
     with tempfile.TemporaryDirectory(prefix=package_name, delete=not keep) as d:

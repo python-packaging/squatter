@@ -1,3 +1,4 @@
+import re
 import tarfile
 import unittest
 from pathlib import Path
@@ -106,3 +107,13 @@ class SquatterEnvTest(unittest.TestCase):
         self.assertEqual("", result.output)
         self.assertFalse(result.exception)
         self.assertEqual(1, uploads)
+
+    @patch("squatter.templates.check_output")
+    @patch("squatter.templates.check_call")
+    def test_cli_keep_flag(self, check_call_mock: Any, check_output_mock: Any) -> None:
+        runner = CliRunner()
+        result = runner.invoke(generate, ["--keep", "foo"])
+        m = re.match("Generating in (.+)", result.output)
+        assert Path(m.group(1)).exists()
+        assert Path(m.group(1), "pyproject.toml")
+        self.assertFalse(result.exception)
