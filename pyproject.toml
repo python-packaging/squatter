@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "squatter"
+readme = "README.md"
+authors = [
+    {name="Amethyst Reese", email="amethyst@n7.gg"},
+    {name="Tim Hatch"},
+]
+license = "MIT"
+license-files = ["LICENSE"]
+dynamic = ["version", "description"]
+requires-python = ">=3.12"
+dependencies = [
+    "click >= 8",
+    "hatch >= 1.14",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black==25.1.0",
+    "coverage==7.8.0",
+    "flake8==7.2.0",
+    "mypy==1.15.0",
+    "tox==4.26.0",
+    "ufmt==2.8.0",
+    "usort==1.0.8",
+    "volatile==2.1.0",
+]
+
+[project.scripts]
+squatter = "squatter.__main__:cli"
+
+[project.urls]
+Home = "https://github.com/python-packaging/squatter"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.mypy]
+ignore_missing_imports = true
+strict = true
+
+[tool.tox]
+env_list = ["3.12", "3.13"]
+
+[tool.tox.env_run_base]
+commands = [["make", "test"]]
+extras = ["dev"]
+# set_env = { COVERAGE_FILE="{env:env_dir}/.coverage" }
+allowlist_externals = ["make"]

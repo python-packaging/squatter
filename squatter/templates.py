@@ -1,19 +1,23 @@
-import glob
-import sys
 from pathlib import Path
 from subprocess import check_call, check_output
 from typing import Optional
 
-SETUP_PY_TMPL = """\
-from setuptools import setup
+PYPROJECT_TEMPLATE = """\
+["build-system"]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-setup(
-    name={package_name!r},
-    description="coming soon",
-    version="0.0.0a1",
-    author={author!r},
-    author_email={author_email!r},
-)
+[project]
+name = {package_name!r}
+description = "coming soon"
+version = "0.0.0a1"
+authors = [
+    {{name={author!r}, email={author_email!r} }},
+]
+"""
+
+INIT_TEMPLATE = """\
+'''coming soon'''
 """
 
 
@@ -36,15 +40,16 @@ class Env:
                 ["git", "config", "user.email"], encoding="utf-8"
             ).strip()
 
-        data = SETUP_PY_TMPL.format(**locals())
-        (Path(self.staging_directory) / "setup.py").write_text(data)
+        data = PYPROJECT_TEMPLATE.format(**locals())
+        (Path(self.staging_directory) / "pyproject.toml").write_text(data)
+
+        pkg_dir = Path(self.staging_directory) / package_name.replace("-", "_")
+        pkg_dir.mkdir(parents=True, exist_ok=True)
+        (pkg_dir / "__init__.py").write_text(INIT_TEMPLATE)
 
     def sdist(self) -> None:
-        check_call([sys.executable, "setup.py", "sdist"], cwd=self.staging_directory)
+        check_call(["hatch", "build"], cwd=self.staging_directory)
 
     def upload(self) -> None:
         self.sdist()
-        check_call(
-            ["twine", "upload"] + glob.glob(f"{self.staging_directory}/dist/*.tar.gz"),
-            cwd=self.staging_directory,
-        )
+        check_call(["hatch", "upload"], cwd=self.staging_directory)
