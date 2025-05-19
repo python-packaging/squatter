@@ -114,6 +114,7 @@ class SquatterEnvTest(unittest.TestCase):
         runner = CliRunner()
         result = runner.invoke(generate, ["--keep", "foo"])
         m = re.match("Generating in (.+)", result.output)
+        assert m is not None
         assert Path(m.group(1)).exists()
         assert Path(m.group(1), "pyproject.toml")
         self.assertFalse(result.exception)
