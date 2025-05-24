@@ -91,7 +91,7 @@ class SquatterEnvTest(unittest.TestCase):
             if cmd[0] != "hatch":
                 return check_call(cmd, **kwargs)
             else:
-                if "upload" in cmd:
+                if "publish" in cmd:
                     uploads += 1
 
         check_call_mock.side_effect = patched_check_call
