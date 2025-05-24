@@ -52,4 +52,4 @@ class Env:
 
     def upload(self) -> None:
         self.sdist()
-        check_call(["hatch", "upload"], cwd=self.staging_directory)
+        check_call(["hatch", "publish"], cwd=self.staging_directory)
