@@ -88,11 +88,16 @@ class SquatterEnvTest(unittest.TestCase):
 
         def patched_check_call(cmd: List[str], **kwargs: Any) -> Any:
             nonlocal uploads
-            if cmd[0] != "hatch":
-                return check_call(cmd, **kwargs)
-            else:
+            if cmd[0] == "hatch":
                 if "publish" in cmd:
                     uploads += 1
+                else:
+                    return check_call(cmd, **kwargs)
+            elif cmd[0] == "twine":
+                if "upload" in cmd:
+                    uploads += 1
+            else:
+                return check_call(cmd, **kwargs)
 
         check_call_mock.side_effect = patched_check_call
 
