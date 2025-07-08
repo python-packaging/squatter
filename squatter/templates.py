@@ -1,3 +1,4 @@
+from glob import glob
 from pathlib import Path
 from subprocess import check_call, check_output
 from typing import Optional
@@ -52,4 +53,8 @@ class Env:
 
     def upload(self) -> None:
         self.sdist()
-        check_call(["hatch", "publish"], cwd=self.staging_directory)
+        check_call(
+            ["twine", "upload", *glob("dist/*", root_dir=self.staging_directory)],
+            cwd=self.staging_directory,
+        )
+        # check_call(["hatch", "publish"], cwd=self.staging_directory)
